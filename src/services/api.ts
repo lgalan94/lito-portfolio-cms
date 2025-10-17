@@ -1,4 +1,3 @@
-
 import axios from 'axios';
 
 const VITE_API_BASE_URL = 'http://localhost:4001/api';
@@ -7,7 +6,7 @@ const api = axios.create({
   baseURL: VITE_API_BASE_URL,
 });
 
-// Request interceptor to add the auth token to headers
+// 🔹 Request interceptor to add the auth token
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
@@ -16,9 +15,7 @@ api.interceptors.request.use(
     }
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
 export default api;
