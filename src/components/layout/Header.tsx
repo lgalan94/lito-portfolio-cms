@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import { BellIcon, MenuIcon } from '../ui/Icons';
-import { Fragment } from 'react/jsx-runtime';
 import { useAuth } from '../../hooks/useAuth';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-const Header = () => {
+interface HeaderProps {
+  setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Header: React.FC<HeaderProps> = ({ }) => {
   const { user, logout, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
@@ -16,7 +19,7 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-slate-900/50 backdrop-blur-md border-b border-slate-700/50 text-white">
+    <header className="bg-slate-900/50 backdrop-blur-md border-b border-slate-700/50 text-white fixed w-full z-50">
       <div className="flex items-center justify-between px-4 md:px-6 py-3">
         {/* Left Section — Brand + Menu Button */}
         <div className="flex items-center space-x-3">
@@ -65,37 +68,7 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Mobile Dropdown Menu */}
-      <div
-        className={`lg:hidden bg-slate-800/90 backdrop-blur-md border-t border-slate-700/50 transition-all duration-300 ease-in-out ${
-          isMenuOpen ? 'max-h-40 opacity-100 py-3' : 'max-h-0 opacity-0 overflow-hidden'
-        }`}
-      >
-        <div className="flex flex-col items-center space-y-3">
-          {isAuthenticated ? (
-            <Fragment>
-              <span className="text-sm text-gray-300">
-                Welcome, <span className="font-semibold">{user?.fullName}</span>
-              </span>
-              <button
-                onClick={handleLogout}
-                className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md transition duration-300"
-              >
-                Logout
-              </button>
-            </Fragment>
-          ) : (
-            <Fragment>
-              <Link
-                to="/login"
-                className="px-4 py-2 text-gray-300 hover:text-indigo-400 transition duration-300"
-              >
-                Login
-              </Link>
-            </Fragment>
-          )}
-        </div>
-      </div>
+      
     </header>
   );
 };

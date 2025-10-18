@@ -7,6 +7,7 @@ export interface SocialLinks {
   linkedin?: string | null;
   facebook?: string | null;
   gitlab?: string | null;
+  [key: string]: string | null |undefined;
 }
 
 // 🔹 User type (aligned with your userSchema)
@@ -22,6 +23,13 @@ export interface User {
   isAdmin: boolean;
   createdAt?: string;
   updatedAt?: string;
+}
+
+export interface Skill {
+  _id: string,
+  name: string,
+  icon: string,
+  category: string
 }
 
 // 🔹 Auth State

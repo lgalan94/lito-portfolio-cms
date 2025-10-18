@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { useAuth } from './hooks/useAuth';
+import { Toaster } from './components/ui/sonner';
 
 // Layout Components
 import Header from './components/layout/Header';
@@ -10,6 +11,7 @@ import Sidebar from './components/layout/Sidebar';
 // Pages
 import LoginPage from './components/auth/LoginPage';
 import DashboardView from './components/views/DashboardView';
+import SkillsView from './components/views/SkillsView';
 import SettingsView from './components/views/SettingsView';
 import PrivateRoute from './components/PrivateRoute';
 import NotFoundPage from './components/views/NotFoundPage';
@@ -71,6 +73,15 @@ const App: React.FC = () => {
             />
 
             <Route
+              path="/skills"
+              element={
+                <PrivateRoute>
+                  <SkillsView />
+                </PrivateRoute>
+              }
+            />
+
+            <Route
               path="/settings"
               element={
                 <PrivateRoute>
@@ -81,7 +92,9 @@ const App: React.FC = () => {
 
             {/* 404 fallback */}
             <Route path="*" element={<NotFoundPage />} />
+            
           </Routes>
+          <Toaster richColors position="top-right" />
         </LayoutWrapper>
       </HashRouter>
     </AuthProvider>
