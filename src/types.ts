@@ -25,6 +25,20 @@ export interface User {
   updatedAt?: string;
 }
 
+export interface Project {
+  _id: string;
+  title: string;
+  tags: string | string[];
+  description: string;
+  imageUrl: string;
+  imagePublicId?: string | null;
+  liveUrl?: string | null;
+  repoUrl?: string | null;
+  owner: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface Skill {
   _id: string,
   name: string,
