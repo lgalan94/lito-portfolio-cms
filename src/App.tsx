@@ -11,6 +11,7 @@ import Sidebar from './components/layout/Sidebar';
 // Pages
 import LoginPage from './components/auth/LoginPage';
 import DashboardView from './components/views/DashboardView';
+import MessageView from './components/views/MessagesView';
 import ProjectsView from './components/views/ProjectsView';
 import SkillsView from './components/views/SkillsView';
 import SettingsView from './components/views/SettingsView';
@@ -69,6 +70,15 @@ const App: React.FC = () => {
               element={
                 <PrivateRoute>
                   <DashboardView />
+                </PrivateRoute>
+              }
+            />
+
+            <Route
+              path="/messages"
+              element={
+                <PrivateRoute>
+                  <MessageView />
                 </PrivateRoute>
               }
             />

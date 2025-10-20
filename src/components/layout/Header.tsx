@@ -1,17 +1,19 @@
-import { useState } from 'react';
-import { BellIcon, MenuIcon } from '../ui/Icons';
+import { useState, useRef } from 'react';
+import { BellIcon, MenuIcon, ChevronDownIcon, LogOutIcon, UserIcon } from '../ui/Icons';
 import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface HeaderProps {
-  setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsSidebarOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Header: React.FC<HeaderProps> = ({ }) => {
+const Header: React.FC<HeaderProps> = ({ setIsSidebarOpen }) => {
   const { user, logout, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   const handleLogout = () => {
     logout();
@@ -24,51 +26,96 @@ const Header: React.FC<HeaderProps> = ({ }) => {
         {/* Left Section — Brand + Menu Button */}
         <div className="flex items-center space-x-3">
           {/* Mobile Sidebar Toggle */}
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="lg:hidden text-slate-400 hover:text-white focus:outline-none"
-            aria-label="Toggle sidebar"
-          >
-            <MenuIcon className="h-6 w-6" />
-          </button>
+          {setIsSidebarOpen && (
+            <button
+              onClick={() => setIsSidebarOpen((prev) => !prev)}
+              className="lg:hidden text-slate-400 hover:text-white focus:outline-none"
+              aria-label="Toggle sidebar"
+            >
+              <MenuIcon className="h-6 w-6" />
+            </button>
+          )}
 
-          {/* App Title or User Name */}
+          {/* App Title */}
           <h1 className="text-lg md:text-2xl font-semibold truncate">
             {user?.fullName || 'My App'}
           </h1>
         </div>
 
-        {/* Right Section — Notifications, Profile & Logout */}
-        <div className="flex items-center space-x-4">
+        {/* Right Section — Notifications & Profile */}
+        <div className="flex items-center space-x-4 relative">
+          {/* Notifications */}
           <button
-            className="text-slate-400 hover:text-white transition-colors duration-200"
+            className="text-slate-400 hover:text-white transition-colors duration-200 relative"
             aria-label="Notifications"
           >
             <BellIcon className="h-6 w-6" />
+            {/* 🔴 Example notification dot */}
+            <span className="absolute top-0 right-0 block h-2 w-2 bg-red-500 rounded-full"></span>
           </button>
 
-          {/* Profile Picture */}
-          <div className="w-10 h-10 rounded-full overflow-hidden border border-slate-600">
-            <img
-              src={user?.profilePictureUrl || '/Profile.png'}
-              alt={`${user?.fullName || 'User'} Profile`}
-              className="w-full h-full object-cover"
-            />
-          </div>
-
-          {/* Logout Button (Visible on Large Screens) */}
-          {isAuthenticated && (
-            <button
-              onClick={handleLogout}
-              className="hidden lg:block px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md transition duration-300"
-            >
-              Logout
+          {/* Profile Dropdown */}
+          <div
+            ref={dropdownRef}
+            className="relative"
+            onMouseEnter={() => setIsDropdownOpen(true)}
+            onMouseLeave={() => setIsDropdownOpen(false)}
+          >
+            <button className="flex items-center space-x-2 focus:outline-none">
+              <div className="w-10 h-10 rounded-full overflow-hidden border border-slate-600">
+                <img
+                  src={user?.profilePictureUrl || '/Profile.png'}
+                  alt={`${user?.fullName || 'User'} Profile`}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <ChevronDownIcon className="w-4 h-4 text-slate-400" />
             </button>
-          )}
+
+            {/* Dropdown Menu */}
+            <AnimatePresence>
+              {isDropdownOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.15 }}
+                  className="absolute right-0 mt-2 w-48 bg-slate-800 border border-slate-700 rounded-lg shadow-lg overflow-hidden"
+                >
+                  <div className="px-4 py-3 border-b border-slate-700">
+                    <p className="text-sm font-semibold">{user?.fullName}</p>
+                    <p className="text-xs text-slate-400 truncate">{user?.email}</p>
+                  </div>
+
+                  <ul className="py-1 text-sm">
+                    <li>
+                      <button
+                        onClick={() => navigate('/settings')}
+                        className="w-full flex items-center gap-2 px-4 py-2 hover:bg-slate-700 text-left transition"
+                      >
+                        <UserIcon className="w-4 h-4 text-slate-300" />
+                        Profile
+                      </button>
+                    </li>
+
+                    {isAuthenticated && (
+                      <li>
+                        <button
+                          onClick={handleLogout}
+                          className="w-full flex items-center gap-2 px-4 py-2 hover:bg-red-600/20 text-left text-red-400 transition"
+                        >
+                          <LogOutIcon className="w-4 h-4" />
+                          Logout
+                        </button>
+                      </li>
+                    )}
+                  </ul>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
       </div>
-
-      
     </header>
   );
 };

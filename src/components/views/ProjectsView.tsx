@@ -438,6 +438,7 @@ const ProjectsView: React.FC = () => {
                 </button>
                 <button
                   onClick={handleDelete}
+                  disabled={isDeleting}
                   className="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-md"
                 >
                   {isDeleting ? 'Deleting ...' : 'Delete'}

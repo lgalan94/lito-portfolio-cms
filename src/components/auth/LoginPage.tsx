@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import LoadingSpinner from '../LoadingSpinner';
+import { motion } from 'framer-motion';
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -11,8 +12,6 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-
-  // ✨ Optional: success feedback (you can replace with react-toastify if you want)
   const [success, setSuccess] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -23,72 +22,106 @@ const LoginPage: React.FC = () => {
 
     try {
       await login(email, password);
-
-      setSuccess('Login successful! Redirecting...');
-      // Short delay to show feedback before navigating
-      setTimeout(() => navigate('/dashboard'), 1000);
+      setSuccess('✅ Login successful! Redirecting...');
+      navigate('/dashboard');
     } catch (err: any) {
-      setError(err.message || 'Failed to login. Please check your credentials.');
+      setError(err.message || '❌ Failed to login. Please check your credentials.');
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100 dark:bg-gray-900">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white text-center">Login</h1>
+    <div className="relative flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-950 overflow-hidden">
+      {/* ✨ Background Overlay with Particles / Glow */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-indigo-900/30 via-slate-800/20 to-transparent" />
+      <div className="absolute inset-0 backdrop-blur-sm bg-black/40"></div>
 
+      {/* 🌌 Animated Login Card */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: 'easeOut' }}
+        className="relative bg-slate-900/70 backdrop-blur-xl border border-slate-700/90 shadow-2xl rounded-2xl p-8 w-full max-w-md text-slate-100"
+      >
+        {/* Logo / Title */}
+        <div className="text-center mb-6">
+          {/* <img src="/logo.svg" alt="Logo" className="w-16 h-16 mx-auto mb-3" /> */}
+          <h1 className="text-3xl font-bold tracking-tight text-white">Welcome Back</h1>
+          <p className="text-slate-400 text-sm mt-1">Sign in to continue</p>
+        </div>
+
+        {/* Feedback Messages */}
         {error && (
-          <div className="mb-4 p-3 rounded bg-red-100 text-red-700 text-sm">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="mb-4 p-3 rounded-lg bg-red-900/30 text-red-300 text-sm text-center border border-red-800/50"
+          >
             {error}
-          </div>
+          </motion.div>
         )}
-
         {success && (
-          <div className="mb-4 p-3 rounded bg-green-100 text-green-700 text-sm">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="mb-4 p-3 rounded-lg bg-green-900/30 text-green-300 text-sm text-center border border-green-800/50"
+          >
             {success}
-          </div>
+          </motion.div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-gray-700 dark:text-gray-300 text-sm mb-2">Email</label>
+            <label className="block text-sm font-medium text-slate-300 mb-1">
+              Email Address
+            </label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-md text-white placeholder-slate-500 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+              placeholder="you@example.com"
             />
           </div>
 
           <div>
-            <label className="block text-gray-700 dark:text-gray-300 text-sm mb-2">Password</label>
+            <label className="block text-sm font-medium text-slate-300 mb-1">
+              Password
+            </label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-md text-white placeholder-slate-500 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+              placeholder="••••••••"
             />
           </div>
 
-          <button
+          <motion.button
             type="submit"
             disabled={isLoading}
-            className="w-full py-2 mt-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-md transition disabled:opacity-50 disabled:cursor-not-allowed"
+            whileTap={{ scale: 0.97 }}
+            className="w-full py-2.5 mt-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg font-semibold text-white transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-indigo-500/30"
           >
             {isLoading ? (
-              <span className="flex justify-center items-center">
-                <LoadingSpinner  /> Logging in...
+              <span className="flex justify-center items-center gap-2">
+                <LoadingSpinner /> Logging in...
               </span>
             ) : (
               'Login'
             )}
-          </button>
+          </motion.button>
         </form>
-      </div>
+
+        {/* Footer */}
+        <p className="text-center text-xs text-slate-500 mt-6">
+          © {new Date().getFullYear()} Portfolio CMS — All rights reserved.
+        </p>
+      </motion.div>
     </div>
   );
 };

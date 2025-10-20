@@ -25,6 +25,18 @@ export interface User {
   updatedAt?: string;
 }
 
+export interface Message {
+  _id: string;
+  senderName: string;
+  senderEmail: string;
+  subject: string;
+  messageBody: string;
+  receivedAt: string;
+  status: 'unread' | 'read' | 'archived' | 'deleted';
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface Project {
   _id: string;
   title: string;
