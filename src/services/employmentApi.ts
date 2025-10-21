@@ -2,9 +2,10 @@ import api from './api';
 import type { Employment } from '../types';
 
 export const getAllEmployment = async (): Promise<Employment[]> => {
-  const res = await api.get('/employment');
+  const res = await api.get<Employment[]>('/employment');
   return res.data;
 };
+
 
 export const createEmployment = async (data: Partial<Employment>) => {
   const res = await api.post('/employment/create', data);

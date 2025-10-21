@@ -1,4 +1,4 @@
-import { useState, useEffect, type Key } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PlusCircle, Trash2, Pencil } from "lucide-react";
 import {
@@ -30,16 +30,7 @@ import {
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
-
-interface Employment {
-  _id: Key | null | undefined;
-  title: string;
-  company: string;
-  location: string;
-  startDate: string;
-  endDate?: string;
-  description: string[];
-}
+import type { Employment } from "../../types";
 
 const EmploymentView = () => {
   const [employments, setEmployments] = useState<Employment[]>([]);
@@ -133,18 +124,21 @@ const EmploymentView = () => {
 
   // ✅ Edit employment
   const handleEditEmployment = (emp: Employment) => {
-    setFormData({
-      title: emp.title,
-      company: emp.company,
-      location: emp.location,
-      startDate: emp.startDate,
-      endDate: emp.endDate || "",
-      description: emp.description.join("\n"), // ✅ Convert array back to multi-line text
-    });
-    setEditingId(emp._id as string);
-    setIsEditing(true);
-    setIsModalOpen(true);
-  };
+  setFormData({
+    title: emp.title,
+    company: emp.company,
+    location: emp.location,
+    startDate: emp.startDate,
+    endDate: emp.endDate || "",
+    description: Array.isArray(emp.description)
+      ? emp.description.join("\n")
+      : emp.description, // ✅ handles both array and string
+  });
+  setEditingId(emp._id as string);
+  setIsEditing(true);
+  setIsModalOpen(true);
+};
+
 
   // ✅ Delete employment
   const handleDeleteEmployment = async (id: string) => {
@@ -215,10 +209,13 @@ const EmploymentView = () => {
                   <p className="text-xs text-slate-500">{emp.location}</p>
 
                   <ul className="list-disc ml-5 mt-2 text-sm text-slate-300 space-y-1">
-                    {emp.description.map((d, i) => (
-                      <li key={i}>{d}</li>
-                    ))}
+                    {Array.isArray(emp.description) ? (
+                      emp.description.map((d, i) => <li key={i}>{d}</li>)
+                    ) : (
+                      <li>{emp.description}</li>
+                    )}
                   </ul>
+
                 </div>
 
                 {/* Action Buttons */}
