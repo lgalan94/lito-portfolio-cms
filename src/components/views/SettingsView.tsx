@@ -79,6 +79,7 @@ const SettingsView: React.FC = () => {
       formData.append('fullName', user.fullName);
       formData.append('jobTitle', user.jobTitle);
       formData.append('bio', user.bio);
+      formData.append('shortBio', user.shortBio);
       formData.append('socialLinks', JSON.stringify(user.socialLinks));
       if (profileImage) formData.append('profilePicture', profileImage);
 
@@ -152,7 +153,7 @@ const SettingsView: React.FC = () => {
             </div>
 
             {/* Name & Job */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
                 <label className="block text-sm font-medium text-slate-400 mb-1">
                   Full Name
@@ -173,6 +174,18 @@ const SettingsView: React.FC = () => {
                   type="text"
                   name="jobTitle"
                   value={user.jobTitle || ''}
+                  onChange={handleChange}
+                  className="w-full bg-slate-700 text-white p-2 rounded-md border border-slate-600 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-400 mb-1">
+                  Short Bio
+                </label>
+                <input
+                  type="text"
+                  name="shortBio"
+                  value={user.shortBio || ''}
                   onChange={handleChange}
                   className="w-full bg-slate-700 text-white p-2 rounded-md border border-slate-600 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 />

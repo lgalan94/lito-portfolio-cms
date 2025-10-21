@@ -14,6 +14,7 @@ import DashboardView from './components/views/DashboardView';
 import MessageView from './components/views/MessagesView';
 import ProjectsView from './components/views/ProjectsView';
 import SkillsView from './components/views/SkillsView';
+import EmploymentView from './components/views/EmploymentView';
 import SettingsView from './components/views/SettingsView';
 import PrivateRoute from './components/PrivateRoute';
 import NotFoundPage from './components/views/NotFoundPage';
@@ -88,6 +89,15 @@ const App: React.FC = () => {
               element={
                 <PrivateRoute>
                   <ProjectsView />
+                </PrivateRoute>
+              }
+            />
+
+            <Route
+              path="/work-experience"
+              element={
+                <PrivateRoute>
+                  <EmploymentView />
                 </PrivateRoute>
               }
             />

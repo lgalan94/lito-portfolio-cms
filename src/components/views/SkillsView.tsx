@@ -132,7 +132,7 @@ const SkillsView = () => {
           <h2 className="text-white text-2xl font-semibold">My Skills</h2>
           <Button
             onClick={() => setIsModalOpen(true)}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 overflow-hidden border border-slate-700 shadow-md hover:scale-103"
           >
             <PlusCircle className="w-5 h-5" />
             Add Skill
@@ -150,7 +150,7 @@ const SkillsView = () => {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.8, y: 20 }}
                 transition={{ duration: 0.25, ease: "easeInOut" }}
-                className={`relative text-slate-400 flex flex-col items-center p-4 bg-slate-800/50 rounded-xl hover:bg-slate-800 transition group ${
+                className={`relative text-slate-400 flex flex-col items-center p-4 bg-slate-800/90 overflow-hidden border border-slate-700 shadow-md rounded-xl hover:bg-slate-800 transition group ${
                   deletingId === skill._id ? "opacity-50" : ""
                 }`}
               >
@@ -242,6 +242,7 @@ const SkillsView = () => {
                   <SelectContent className="bg-slate-800 text-gray-200 border-slate-700">
                     <SelectItem value="Frontend">Frontend</SelectItem>
                     <SelectItem value="Backend">Backend</SelectItem>
+                    <SelectItem value="Database">Database</SelectItem>
                     <SelectItem value="Tools">Tools</SelectItem>
                     <SelectItem value="Other">Other</SelectItem>
                   </SelectContent>
@@ -256,6 +257,18 @@ const SkillsView = () => {
                   placeholder="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg"
                   className="mt-1 bg-slate-800 border-slate-700"
                 />
+
+              <div className="mt-6 text-sm">
+                <a
+                  href="https://devicon.dev/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline"
+                >
+                  <span>👉</span> Go to Dev Icons
+                </a>
+              </div>
+
               </div>
             </div>
 

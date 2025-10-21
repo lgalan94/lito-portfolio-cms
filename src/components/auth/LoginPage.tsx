@@ -32,30 +32,38 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-950 overflow-hidden">
-      {/* ✨ Background Overlay with Particles / Glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-indigo-900/30 via-slate-800/20 to-transparent" />
-      <div className="absolute inset-0 backdrop-blur-sm bg-black/40"></div>
+    <div className="relative flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 overflow-hidden">
+      {/* Subtle background gradient glow */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,_rgba(56,189,248,0.08),_transparent_60%)]" />
 
-      {/* 🌌 Animated Login Card */}
+      {/* Card Container */}
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: 25 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className="relative bg-slate-900/70 backdrop-blur-xl border border-slate-700/90 shadow-2xl rounded-2xl p-8 w-full max-w-md text-slate-100"
+        className="relative w-full max-w-md rounded-2xl border border-slate-700 bg-slate-900/10 backdrop-blur-xl shadow-[0_0_30px_rgba(0,0,0,0.4)] p-8 text-slate-100"
       >
-        {/* Logo / Title */}
-        <div className="text-center mb-6">
-          {/* <img src="/logo.svg" alt="Logo" className="w-16 h-16 mx-auto mb-3" /> */}
-          <h1 className="text-3xl font-bold tracking-tight text-white">Welcome Back</h1>
+        {/* Header / Branding */}
+        <div className="text-center mb-8">
+          <motion.img
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
+            src="/logo.png"
+            alt="Logo"
+            className="w-16 h-16 mx-auto mb-2 drop-shadow-[0_0_15px_rgba(56,189,248,0.3)]"
+          />
+          <h1 className="text-2xl font-semibold tracking-tight text-cyan-400">
+            Portfolio – CMS
+          </h1>
           <p className="text-slate-400 text-sm mt-1">Sign in to continue</p>
         </div>
 
         {/* Feedback Messages */}
         {error && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
             className="mb-4 p-3 rounded-lg bg-red-900/30 text-red-300 text-sm text-center border border-red-800/50"
           >
             {error}
@@ -63,8 +71,8 @@ const LoginPage: React.FC = () => {
         )}
         {success && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
             className="mb-4 p-3 rounded-lg bg-green-900/30 text-green-300 text-sm text-center border border-green-800/50"
           >
             {success}
@@ -82,7 +90,7 @@ const LoginPage: React.FC = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-md text-white placeholder-slate-500 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+              className="w-full px-4 py-2.5 bg-slate-800/70 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-200"
               placeholder="you@example.com"
             />
           </div>
@@ -96,7 +104,7 @@ const LoginPage: React.FC = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-md text-white placeholder-slate-500 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+              className="w-full px-4 py-2.5 bg-slate-800/70 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-200"
               placeholder="••••••••"
             />
           </div>
@@ -105,21 +113,21 @@ const LoginPage: React.FC = () => {
             type="submit"
             disabled={isLoading}
             whileTap={{ scale: 0.97 }}
-            className="w-full py-2.5 mt-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg font-semibold text-white transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-indigo-500/30"
+            className="w-full py-2.5 mt-2 bg-cyan-600 hover:bg-cyan-700 rounded-lg font-semibold text-white transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-cyan-500/30"
           >
             {isLoading ? (
               <span className="flex justify-center items-center gap-2">
                 <LoadingSpinner /> Logging in...
               </span>
             ) : (
-              'Login'
+              'Sign In'
             )}
           </motion.button>
         </form>
 
         {/* Footer */}
         <p className="text-center text-xs text-slate-500 mt-6">
-          © {new Date().getFullYear()} Portfolio CMS — All rights reserved.
+          © {new Date().getFullYear()} <span className="text-cyan-400 font-medium">Portfolio CMS</span> — All rights reserved.
         </p>
       </motion.div>
     </div>

@@ -6,6 +6,7 @@ import {
   ProjectsIcon,
   MessagesIcon,
   SkillsIcon,
+  WorkExperienceIcon,
   SettingsIcon,
   CodeBracketIcon,
   MenuIcon,
@@ -26,6 +27,8 @@ const routeToView = (path: string): View => {
       return 'messages';
     case '/skills':
       return 'skills';
+    case '/work-experience':
+      return 'work-experience';
     case '/settings':
       return 'settings';
     default:
@@ -101,13 +104,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
             label="Dashboard"
           />
           <NavItem
-            view="projects"
-            activeView={activeView}
-            onClick={() => handleNavigation('/projects')}
-            icon={<ProjectsIcon />}
-            label="Projects"
-          />
-          <NavItem
             view="messages"
             activeView={activeView}
             onClick={() => handleNavigation('/messages')}
@@ -115,11 +111,25 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
             label="Messages"
           />
           <NavItem
+            view="projects"
+            activeView={activeView}
+            onClick={() => handleNavigation('/projects')}
+            icon={<ProjectsIcon />}
+            label="Projects"
+          />
+          <NavItem
             view="skills"
             activeView={activeView}
             onClick={() => handleNavigation('/skills')}
             icon={<SkillsIcon />}
             label="Skills"
+          />
+          <NavItem
+            view="work-experience"
+            activeView={activeView}
+            onClick={() => handleNavigation('/work-experience')}
+            icon={<WorkExperienceIcon  />}
+            label="Employment History"
           />
           <NavItem
             view="settings"

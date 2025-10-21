@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { BellIcon, MenuIcon, ChevronDownIcon, LogOutIcon, UserIcon } from '../ui/Icons';
+import { MenuIcon, ChevronDownIcon, LogOutIcon, UserIcon } from '../ui/Icons';
 import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -25,7 +25,6 @@ const Header: React.FC<HeaderProps> = ({ setIsSidebarOpen }) => {
       <div className="flex items-center justify-between px-4 md:px-6 py-3">
         {/* Left Section — Brand + Menu Button */}
         <div className="flex items-center space-x-3">
-          {/* Mobile Sidebar Toggle */}
           {setIsSidebarOpen && (
             <button
               onClick={() => setIsSidebarOpen((prev) => !prev)}
@@ -36,24 +35,21 @@ const Header: React.FC<HeaderProps> = ({ setIsSidebarOpen }) => {
             </button>
           )}
 
-          {/* App Title */}
-          <h1 className="text-lg md:text-2xl font-semibold truncate">
-            {user?.fullName || 'My App'}
-          </h1>
+          <div className="w-10 h-10 flex-shrink-0">
+    <img
+      src="/logo.png" // <-- Replace with your logo path
+      alt="Logo"
+      className="w-full h-full object-contain"
+    />
+  </div>
+
+  <h1 className="text-lg md:text-2xl font-semibold truncate">
+    {user?.fullName || 'My App'}
+  </h1>
         </div>
 
-        {/* Right Section — Notifications & Profile */}
+        {/* Right Section — Profile */}
         <div className="flex items-center space-x-4 relative">
-          {/* Notifications */}
-          <button
-            className="text-slate-400 hover:text-white transition-colors duration-200 relative"
-            aria-label="Notifications"
-          >
-            <BellIcon className="h-6 w-6" />
-            {/* 🔴 Example notification dot */}
-            <span className="absolute top-0 right-0 block h-2 w-2 bg-red-500 rounded-full"></span>
-          </button>
-
           {/* Profile Dropdown */}
           <div
             ref={dropdownRef}
@@ -72,7 +68,6 @@ const Header: React.FC<HeaderProps> = ({ setIsSidebarOpen }) => {
               <ChevronDownIcon className="w-4 h-4 text-slate-400" />
             </button>
 
-            {/* Dropdown Menu */}
             <AnimatePresence>
               {isDropdownOpen && (
                 <motion.div

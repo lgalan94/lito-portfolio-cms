@@ -5,7 +5,7 @@ import { FolderKanban, Mail, MailOpen, Archive } from 'lucide-react';
 import Card from '../ui/Card';
 import { getAllProjects } from '../../services/projectApi';
 import { getAllMessages } from '../../services/messageApi';
-import type { Project, Message } from '../../types';
+import type { Message } from '../../types';
 
 const DashboardView: React.FC = () => {
   const [projectCount, setProjectCount] = useState(0);

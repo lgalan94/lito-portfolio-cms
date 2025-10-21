@@ -1,5 +1,5 @@
 // App views
-export type View = 'dashboard' | 'projects' | 'messages' | 'skills' | 'settings';
+export type View = 'dashboard' | 'projects' | 'messages' | 'skills' | 'work-experience' | 'settings';
 
 // 🔹 Social Links (matches schema)
 export interface SocialLinks {
@@ -17,6 +17,7 @@ export interface User {
   email: string;
   jobTitle: string;
   bio: string;
+  shortBio: string;
   profilePictureUrl: string;
   profilePictureUrlPublicId?: string | null;
   socialLinks: SocialLinks;
@@ -49,6 +50,17 @@ export interface Project {
   owner: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface Employment {
+  _id: string;
+  title: string;
+  company: string;
+  location: string;
+  startDate: string;
+  endDate?: string; // optional
+  description: string[] | string; // supports both array and single string
+  createdOn?: string; // automatically set by backend
 }
 
 export interface Skill {

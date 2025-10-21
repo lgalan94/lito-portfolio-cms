@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
-import { Pencil, Trash2, Plus } from 'lucide-react';
+import { Pencil, Trash2, PlusCircle } from 'lucide-react';
+import { Button } from '../ui/button';
 import Card from '../ui/Card';
 import { getAllProjects, createProject, deleteProject, updateProject } from '../../services/projectApi';
 import type { Project } from '../../types';
@@ -171,7 +172,8 @@ const ProjectsView: React.FC = () => {
     try {
       if (modalType === 'add') {
         const res = await createProject(formData as any);
-        const newProjectRaw = (res && (res.project || res)) || null;
+        const newProjectRaw = ((res as any).project || res) || null;
+
         if (newProjectRaw) {
           const newProject = normalizeProject(newProjectRaw);
           setProjects(prev => [newProject, ...prev]);
@@ -234,12 +236,22 @@ const ProjectsView: React.FC = () => {
       <Card className="w-full h-full mt-16 space-y-10">
         <div className="flex justify-between items-center">
           <h2 className="text-2xl font-bold text-white">Projects</h2>
-          <button
+          {/* <button
             onClick={() => openModal('add')}
             className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md flex items-center gap-2"
           >
             <Plus size={18} /> Add Project
-          </button>
+          </button> */}
+
+          <Button
+            onClick={() => openModal('add')}
+            className="flex items-center gap-2 overflow-hidden border border-slate-700 shadow-md hover:scale-103"
+          >
+            <PlusCircle className="w-5 h-5" />
+            Add Project
+          </Button>
+
+
         </div>
 
         {/* Projects Grid */}
@@ -300,12 +312,30 @@ const ProjectsView: React.FC = () => {
                   </div>
 
                   <div className="flex justify-between text-blue-400 text-sm mt-6 font-medium">
-                    <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="hover:underline">
-                      Live Demo
-                    </a>
-                    <a href={project.repoUrl} target="_blank" rel="noopener noreferrer" className="hover:underline">
-                      Source Code
-                    </a>
+                    
+                    {project.liveUrl && (
+                      <a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:underline"
+                      >
+                        Live Demo
+                      </a>
+                    )}
+
+                    {project.repoUrl && (
+                      <a
+                        href={project.repoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:underline"
+                      >
+                        Live Demo
+                      </a>
+                    )}
+
+              
                   </div>
                 </div>
               </motion.div>

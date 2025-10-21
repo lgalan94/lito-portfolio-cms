@@ -136,4 +136,22 @@ export const UserIcon: React.FC<IconProps> = (props) => (
   </svg>
 );
 
+export const WorkExperienceIcon: React.FC<IconProps> = (props) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="h-5 w-5" // <-- same as other icons
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={2}
+    stroke="currentColor"
+    {...props}
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M12 3v3m-6 3h12a2 2 0 012 2v8a2 2 0 01-2 2H6a2 2 0 01-2-2v-8a2 2 0 012-2zm0 0V6a2 2 0 012-2h4a2 2 0 012 2v3"
+    />
+  </svg>
+);
+
 

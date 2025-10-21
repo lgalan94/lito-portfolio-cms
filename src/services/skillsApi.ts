@@ -3,7 +3,7 @@ import type { Skill } from "../types";
 
 export const getAllSkills = async (): Promise<Skill[]> => {
     try {
-        const response = await api.get('/skills');
+        const response = await api.get('/skills/list');
         return response.data;
     } catch (error) {
         console.error('Error fetchng skills');
