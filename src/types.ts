@@ -22,6 +22,8 @@ export interface User {
   profilePictureUrlPublicId?: string | null;
   socialLinks: SocialLinks;
   isAdmin: boolean;
+  resumeUrl?: string | null; 
+  resumePublicId?: string | null; 
   createdAt?: string;
   updatedAt?: string;
 }
