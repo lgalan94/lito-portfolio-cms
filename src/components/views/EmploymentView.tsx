@@ -159,7 +159,7 @@ const EmploymentView = () => {
   };
 
   return (
-    <div className="ml-66">
+    <div className="ml-0 lg:ml-66">
       <Card className="w-full h-full mt-16">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">

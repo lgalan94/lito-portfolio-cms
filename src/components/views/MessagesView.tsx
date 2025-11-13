@@ -117,7 +117,7 @@ const MessageView: React.FC = () => {
   // =======================================================
   return (
     <motion.div
-      className="ml-66"
+      className="ml-0 lg:ml-66"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}

@@ -28,19 +28,19 @@ const Header: React.FC<HeaderProps> = ({ setIsSidebarOpen }) => {
           {setIsSidebarOpen && (
             <button
               onClick={() => setIsSidebarOpen((prev) => !prev)}
-              className="lg:hidden text-slate-400 hover:text-white focus:outline-none"
+              className="lg:hidden mr-6 text-slate-400 hover:text-white focus:outline-none"
               aria-label="Toggle sidebar"
             >
               <MenuIcon className="h-6 w-6" />
             </button>
           )}
 
-          <div className="w-10 h-10 flex-shrink-0">
-    <img
-      src="/logo.png" // <-- Replace with your logo path
-      alt="Logo"
-      className="w-full h-full object-contain"
-    />
+          <div className="w-10 h-10 shrink-0">
+          <img
+            src="/logo.png" 
+            alt="Logo"
+            className="w-full h-full object-contain"
+          />
   </div>
 
   <h1 className="text-lg md:text-2xl font-semibold truncate">

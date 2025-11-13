@@ -219,7 +219,7 @@ const ProjectsView: React.FC = () => {
   };
 
   return (
-    <motion.div className="ml-66" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+    <motion.div className="ml-0 lg:ml-66" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
       <Card className="w-full h-full mt-16 space-y-10">
         <div className="flex justify-between items-center">
           <h2 className="text-2xl font-bold text-white">Projects</h2>

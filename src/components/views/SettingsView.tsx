@@ -151,7 +151,7 @@ const SettingsView: React.FC = () => {
 
   return (
     <motion.div
-      className="ml-66"
+      className="ml-0 lg:ml-66"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
