@@ -1,9 +1,18 @@
-
 import React from 'react';
+import clsx from 'clsx';
 
-const LoadingSpinner: React.FC = () => {
+interface LoadingSpinnerProps {
+  className?: string;
+}
+
+const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ className }) => {
   return (
-    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 dark:border-indigo-400"></div>
+    <div
+      className={clsx(
+        'animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 dark:border-indigo-400',
+        className
+      )}
+    />
   );
 };
 

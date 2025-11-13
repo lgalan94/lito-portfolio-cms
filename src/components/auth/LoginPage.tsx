@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
-import LoadingSpinner from '../LoadingSpinner';
 import { motion } from 'framer-motion';
 
 const LoginPage: React.FC = () => {
@@ -32,9 +31,9 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 overflow-hidden">
+    <div className="relative flex min-h-screen items-center justify-center bg-linear-to-br from-slate-950 via-slate-900 to-slate-950 overflow-hidden">
       {/* Subtle background gradient glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,_rgba(56,189,248,0.08),_transparent_60%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(56,189,248,0.08),transparent_60%)]" />
 
       {/* Card Container */}
       <motion.div
@@ -117,7 +116,7 @@ const LoginPage: React.FC = () => {
           >
             {isLoading ? (
               <span className="flex justify-center items-center gap-2">
-                <LoadingSpinner /> Logging in...
+                 Signing in ...
               </span>
             ) : (
               'Sign In'
