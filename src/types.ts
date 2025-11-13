@@ -49,6 +49,7 @@ export interface Project {
   imagePublicId?: string | null;
   liveUrl?: string | null;
   repoUrl?: string | null;
+  category?: string | null;
   owner: string;
   createdAt: string;
   updatedAt: string;
