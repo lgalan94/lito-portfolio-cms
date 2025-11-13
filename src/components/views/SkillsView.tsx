@@ -19,8 +19,7 @@ import {
   AlertDialogTitle,
   AlertDialogDescription,
   AlertDialogFooter,
-  AlertDialogCancel,
-  AlertDialogAction,
+  AlertDialogCancel
 } from "../ui/alert-dialog";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -170,42 +169,55 @@ const SkillsView = () => {
 
                 {/* Delete Button (only on hover) */}
                 <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition">
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button
-                        variant="destructive"
-                        size="icon"
-                        className="h-7 w-7"
-                        onClick={() => setDeletingId(skill._id as string)}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent className="bg-slate-900 border border-slate-700 text-gray-200">
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>Delete Skill</AlertDialogTitle>
-                        <AlertDialogDescription>
-                          Are you sure you want to delete{" "}
-                          <span className="font-semibold text-white">
-                            {skill.name}
-                          </span>
-                          ? This action cannot be undone.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel className="text-slate-500">
-                          Cancel
-                        </AlertDialogCancel>
-                        <AlertDialogAction
-                          onClick={() => handleDeleteSkill(skill._id as string)}
-                          className="bg-red-600 hover:bg-red-700"
-                          disabled={isDeleting}
+                  <AlertDialog open={deletingId === skill._id} onOpenChange={(open) => {
+                      if (!isDeleting) setDeletingId(open ? (skill._id as string) : null);
+                    }}>
+                      <AlertDialogTrigger asChild>
+                        <Button
+                          variant="destructive"
+                          size="icon"
+                          className="h-7 w-7"
+                          onClick={() => setDeletingId(skill._id as string)}
                         >
-                          { isDeleting ? "Deleting ..." : "Delete" }
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </AlertDialogTrigger>
+
+                      <AlertDialogContent className="bg-slate-900 border border-slate-700 text-gray-200">
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Delete Skill</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            Are you sure you want to delete{" "}
+                            <span className="font-semibold text-white">{skill.name}</span>?  
+                            This action cannot be undone.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+
+                        <AlertDialogFooter>
+                          <AlertDialogCancel
+                            className="text-slate-500"
+                            disabled={isDeleting}
+                            onClick={() => setDeletingId(null)}
+                          >
+                            Cancel
+                          </AlertDialogCancel>
+
+                          {/* 👇 Custom Button instead of AlertDialogAction */}
+                          <Button
+                            onClick={async () => {
+                              await handleDeleteSkill(skill._id as string);
+                              // Close dialog only after deletion completes successfully
+                              setDeletingId(null);
+                            }}
+                            className="bg-red-600 hover:bg-red-700"
+                            disabled={isDeleting && deletingId === skill._id}
+                          >
+                            {isDeleting && deletingId === skill._id ? "Deleting..." : "Delete"}
+                          </Button>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+
                 </div>
               </motion.div>
             ))}
