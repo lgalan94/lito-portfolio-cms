@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
+import { Eye } from 'lucide-react';
 import Card from '../ui/Card';
 import { useAuth } from '../../hooks/useAuth';
 import { getCurrentUser, updateUserProfile } from '../../services/userApi';
@@ -13,6 +14,7 @@ const SettingsView: React.FC = () => {
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [isResumeModalOpen, setIsResumeModalOpen] = useState(false);
 
   // ✅ Load user data
   useEffect(() => {
@@ -28,12 +30,27 @@ const SettingsView: React.FC = () => {
     fetchUser();
   }, []);
 
-  // ✅ Handle input changes
+  // ✅ Prevent background scroll when modal is open
+  useEffect(() => {
+    const originalOverflow = document.body.style.overflow;
+    if (isResumeModalOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = originalOverflow;
+    }
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setIsResumeModalOpen(false);
+    window.addEventListener('keydown', onKey);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [isResumeModalOpen]);
+
+  // ✅ Handle input change
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-
     if (name.startsWith('socialLinks.')) {
       const key = name.split('.')[1];
       setUser((prev) =>
@@ -44,7 +61,7 @@ const SettingsView: React.FC = () => {
     }
   };
 
-  // ✅ Handle profile image change
+  // ✅ Handle profile picture upload
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -69,13 +86,17 @@ const SettingsView: React.FC = () => {
     setPreviewUrl(URL.createObjectURL(file));
   };
 
-  // ✅ Handle resume change
+  // ✅ Handle resume upload
   const handleResumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const validTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
-    const maxSize = 10 * 1024 * 1024; // 10MB
+    const validTypes = [
+      'application/pdf',
+      'application/msword',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    ];
+    const maxSize = 10 * 1024 * 1024;
 
     if (!validTypes.includes(file.type)) {
       toast.error('Please upload a valid resume (PDF or DOC/DOCX).');
@@ -92,7 +113,7 @@ const SettingsView: React.FC = () => {
     toast.success(`Selected resume: ${file.name}`);
   };
 
-  // ✅ Handle submit
+  // ✅ Handle form submit
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) return;
@@ -104,12 +125,15 @@ const SettingsView: React.FC = () => {
       formData.append('jobTitle', user.jobTitle);
       formData.append('bio', user.bio);
       formData.append('shortBio', user.shortBio);
-      formData.append('socialLinks', JSON.stringify(user.socialLinks));
+      formData.append('socialLinks', JSON.stringify(user.socialLinks || {}));
+
       if (profileImage) formData.append('profilePicture', profileImage);
       if (resumeFile) formData.append('resume', resumeFile);
 
-      const updated = await updateUserProfile(formData);
-      setUser(updated);
+      await updateUserProfile(formData);
+      const refreshed = await getCurrentUser();
+      setUser(refreshed);
+
       setPreviewUrl(null);
       setResumeFile(null);
       toast.success('Profile updated successfully!');
@@ -120,13 +144,10 @@ const SettingsView: React.FC = () => {
     }
   };
 
-  if (!user) {
+  if (!user)
     return (
-      <div className="text-center text-slate-400 mt-10">
-        Loading profile...
-      </div>
+      <div className="text-center text-slate-400 mt-10">Loading profile...</div>
     );
-  }
 
   return (
     <motion.div
@@ -174,44 +195,26 @@ const SettingsView: React.FC = () => {
             </div>
           </div>
 
-          {/* Name & Job */}
+          {/* Basic Info */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div>
-              <label className="block text-sm font-medium text-slate-400 mb-1">
-                Full Name
-              </label>
-              <input
-                type="text"
-                name="fullName"
-                value={user.fullName || ''}
-                onChange={handleChange}
-                className="w-full bg-slate-700 text-white p-2 rounded-md border border-slate-600 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-400 mb-1">
-                Job Title
-              </label>
-              <input
-                type="text"
-                name="jobTitle"
-                value={user.jobTitle || ''}
-                onChange={handleChange}
-                className="w-full bg-slate-700 text-white p-2 rounded-md border border-slate-600 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-400 mb-1">
-                Short Bio
-              </label>
-              <input
-                type="text"
-                name="shortBio"
-                value={user.shortBio || ''}
-                onChange={handleChange}
-                className="w-full bg-slate-700 text-white p-2 rounded-md border border-slate-600 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-              />
-            </div>
+            {[
+              { label: 'Full Name', name: 'fullName' },
+              { label: 'Job Title', name: 'jobTitle' },
+              { label: 'Short Bio', name: 'shortBio' },
+            ].map(({ label, name }) => (
+              <div key={name}>
+                <label className="block text-sm font-medium text-slate-400 mb-1">
+                  {label}
+                </label>
+                <input
+                  type="text"
+                  name={name}
+                  value={(user as any)[name] || ''}
+                  onChange={handleChange}
+                  className="w-full bg-slate-700 text-white p-2 rounded-md border border-slate-600 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                />
+              </div>
+            ))}
           </div>
 
           {/* Bio */}
@@ -251,7 +254,7 @@ const SettingsView: React.FC = () => {
             </div>
           </div>
 
-          {/* Resume Upload */}
+          {/* Resume Section */}
           <div>
             <label className="block text-sm font-medium text-slate-400 mb-1">
               Resume (PDF/DOC/DOCX)
@@ -262,10 +265,32 @@ const SettingsView: React.FC = () => {
               onChange={handleResumeChange}
               className="w-full bg-slate-700 text-white p-2 rounded-md border border-slate-600 focus:ring-2 focus:ring-blue-500 focus:outline-none"
             />
-            {resumeFile && (
+
+            {resumeFile ? (
               <p className="text-sm text-slate-300 mt-1">
                 Selected: {resumeFile.name}
               </p>
+            ) : user.resumeUrl ? (
+              <div className="mt-3 flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => setIsResumeModalOpen(true)}
+                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-slate-700 hover:bg-slate-600 text-sm font-medium text-blue-300 hover:text-blue-200 transition-all duration-150 shadow-sm border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 focus:ring-offset-slate-800"
+                >
+                  <Eye className="w-4 h-4" />
+                  View Resume
+                </button>
+                <a
+                  href={user.resumeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-slate-400 hover:text-slate-200 text-sm underline transition"
+                >
+                  Open in new tab
+                </a>
+              </div>
+            ) : (
+              <p className="text-sm text-slate-500 mt-1">No resume uploaded yet.</p>
             )}
           </div>
 
@@ -288,6 +313,44 @@ const SettingsView: React.FC = () => {
           </div>
         </form>
       </Card>
+
+      {/* Resume Modal */}
+      <AnimatePresence>
+        {isResumeModalOpen && user.resumeUrl && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div
+              className="relative bg-slate-900 rounded-xl shadow-lg w-[90%] max-w-4xl h-[85vh] overflow-hidden border border-slate-700"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: 'spring', stiffness: 150, damping: 14 }}
+            >
+              <div className="flex justify-between items-center bg-slate-800 px-4 py-2 border-b border-slate-700">
+                <h3 className="text-slate-200 text-sm font-medium">Resume Preview</h3>
+                <button
+                  onClick={() => setIsResumeModalOpen(false)}
+                  className="text-slate-400 hover:text-slate-200 transition"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <iframe
+                src={`https://docs.google.com/gview?url=${encodeURIComponent(
+                  user.resumeUrl
+                )}&embedded=true`}
+                className="w-full h-full"
+                title="Resume Preview"
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 };

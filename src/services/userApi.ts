@@ -5,7 +5,7 @@ import type { User } from '../types';
 export const getUserById = async (userId: string) => {
   try {
     const response = await api.get(`/profile/${userId}`);
-    return response.data.user;
+    return response.data.user || response.data;
   } catch (error: any) {
     throw new Error(error.response?.data?.message || 'Failed to fetch user profile.');
   }
@@ -15,12 +15,13 @@ export const getUserById = async (userId: string) => {
 export const getCurrentUser = async (): Promise<User> => {
   try {
     const response = await api.get('/profile');
-    return response.data;
+    return response.data.user || response.data; // <— ensure structure is same as updateUserProfile
   } catch (error: any) {
     throw new Error(error.response?.data?.message || 'Failed to fetch current user.');
   }
 };
 
+// ✅ Update user profile (multipart or JSON)
 export const updateUserProfile = async (
   data: Partial<User> | FormData
 ): Promise<User> => {
@@ -31,7 +32,7 @@ export const updateUserProfile = async (
         ? { 'Content-Type': 'multipart/form-data' }
         : { 'Content-Type': 'application/json' },
     });
-    return response.data.user || response.data; // depends on backend structure
+    return response.data.user || response.data;
   } catch (error: any) {
     throw new Error(
       error.response?.data?.message || 'Failed to update user profile.'
