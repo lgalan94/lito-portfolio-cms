@@ -256,6 +256,7 @@ const SkillsView = () => {
                     <SelectItem value="Backend">Backend</SelectItem>
                     <SelectItem value="Database">Database</SelectItem>
                     <SelectItem value="Tools">Tools</SelectItem>
+                    <SelectItem value="Deployment">Deployment</SelectItem>
                     <SelectItem value="Other">Other</SelectItem>
                   </SelectContent>
                 </Select>
