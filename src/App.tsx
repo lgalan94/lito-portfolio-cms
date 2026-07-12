@@ -16,6 +16,7 @@ import ProjectsView from './components/views/ProjectsView';
 import SkillsView from './components/views/SkillsView';
 import EmploymentView from './components/views/EmploymentView';
 import SettingsView from './components/views/SettingsView';
+import CertificatesView from './components/views/CertificatesView';
 import PrivateRoute from './components/PrivateRoute';
 import NotFoundPage from './components/views/NotFoundPage';
 import './App.css';
@@ -107,6 +108,15 @@ const App: React.FC = () => {
               element={
                 <PrivateRoute>
                   <SkillsView />
+                </PrivateRoute>
+              }
+            />
+
+            <Route
+              path="/certificates"
+              element={
+                <PrivateRoute>
+                  <CertificatesView />
                 </PrivateRoute>
               }
             />

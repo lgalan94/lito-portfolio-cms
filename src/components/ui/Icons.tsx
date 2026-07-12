@@ -154,4 +154,37 @@ export const WorkExperienceIcon: React.FC<IconProps> = (props) => (
   </svg>
 );
 
+export const CertificatesIcon: React.FC<IconProps> = (props) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="h-5 w-5"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={2}
+    stroke="currentColor"
+    {...props}
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M7.5 3h7.5A2.5 2.5 0 0117.5 5.5v9A2.5 2.5 0 0115 17H9l-3 3v-3H6A2.5 2.5 0 013.5 14.5v-9A2.5 2.5 0 016 3h1.5z"
+    />
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M8.5 8h7M8.5 11h5"
+    />
+    <circle
+      cx="15.5"
+      cy="16.5"
+      r="2"
+    />
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M14.5 18.3l-.5 2.2 1.5-.9 1.5.9-.5-2.2"
+    />
+  </svg>
+);
+
 

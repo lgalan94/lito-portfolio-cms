@@ -10,6 +10,7 @@ import {
   SettingsIcon,
   CodeBracketIcon,
   MenuIcon,
+  CertificatesIcon
 } from '../ui/Icons';
 
 interface SidebarProps {
@@ -29,6 +30,8 @@ const routeToView = (path: string): View => {
       return 'skills';
     case '/work-experience':
       return 'work-experience';
+    case '/certificates':
+      return 'certificates';
     case '/settings':
       return 'settings';
     default:
@@ -130,6 +133,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
             onClick={() => handleNavigation('/work-experience')}
             icon={<WorkExperienceIcon  />}
             label="Employment History"
+          />
+          <NavItem
+            view="certificates"
+            activeView={activeView}
+            onClick={() => handleNavigation('/certificates')}
+            icon={<CertificatesIcon  />}
+            label="Certificates"
           />
           <NavItem
             view="settings"
